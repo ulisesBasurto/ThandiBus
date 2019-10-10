@@ -16,13 +16,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class RegistrarseActivity extends AppCompatActivity
 {
-
     private EditText EdTnombre;
     private EditText EdTcorreo;
     private EditText EdTcontraseña;
@@ -33,7 +33,7 @@ public class RegistrarseActivity extends AppCompatActivity
     private String contraseña;
 
     FirebaseAuth fAuth;
-    DatabaseReference fDatabase;
+    FirebaseFirestore fDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -42,7 +42,7 @@ public class RegistrarseActivity extends AppCompatActivity
         setContentView(R.layout.activity_registrarse);
 
         fAuth = FirebaseAuth.getInstance();
-        fDatabase = FirebaseDatabase.getInstance().getReference();
+        fDatabase = FirebaseFirestore.getInstance();
 
         EdTnombre = (EditText) findViewById(R.id.txtNombre);
         EdTcorreo = (EditText) findViewById(R.id.txtCorreo);
@@ -91,7 +91,7 @@ public class RegistrarseActivity extends AppCompatActivity
                     map.put("email",correo);
                     map.put("password",contraseña);
                     String id = fAuth.getUid();
-                    fDatabase.child("Users").child(id).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    fDatabase.collection("Users").document(id).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task2) {
                             if (task2.isSuccessful())
