@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class RegistrarseActivity extends AppCompatActivity
 {
-
+    //push a RealtimeDatabase
     private EditText EdTnombre;
     private EditText EdTcorreo;
     private EditText EdTcontraseña;
