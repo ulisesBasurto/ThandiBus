@@ -1,0 +1,76 @@
+{
+    "Usuario":
+    {
+        "IDusuario":1,
+        "tipo":"pasajero",
+        "nombre":"adan",
+        "correo":"adan@mail.com",
+        "contraseña":"123456"
+
+    },
+    "Ruta":
+    {
+        "IDruta":1,
+        "ruta":133,
+        "direccion":"ida",
+        "waypoints":
+        [
+            [
+                "51.2949612", 
+                "-1.0643864"
+            ],
+            [
+                "52.3069282", 
+                "-0.7540226"
+            ],
+            [
+                "52.3069282", 
+                "-0.7540226"
+            ]
+        ]
+
+    },
+    "Ruta-Conductor":
+    {
+        "IDruta-conductor":1,
+        "conductor":3,
+        "ruta":133,
+        "direccion":"ida"
+
+    },
+    "Ruta-pasajero":
+    {
+        "IDruta-usuario":1,
+        "pasajero":3,
+        "ruta":133,
+        "direccion":"ida"
+
+    },
+    "Historial-Conductor":
+    {
+        "IDhistorial-conductor": 1,
+        "IDruta-conductor":1,
+        "fechas":
+        [
+            [
+                "2019-10-10", 
+                "6:08:05", 
+                "8:21:42"
+            ]
+        ]
+    },
+    "Historial-Pasajero":
+    {
+        "IDhistorial-pasajero": 1,
+        "IDruta-pasajero":1,
+        "fechas":
+        [
+            [
+                "2019-10-10", 
+                "12:08:05", 
+                "13:21:42"
+            ]
+        ]
+    }
+}
+
