@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -23,14 +24,16 @@ import java.util.Map;
 
 public class RegistrarseActivity extends AppCompatActivity
 {
-    private EditText EdTnombre;
-    private EditText EdTcorreo;
-    private EditText EdTcontraseña;
-    private Button BtRegistrarse;
+    private EditText edTnombre;
+    private EditText edTcorreo;
+    private EditText edTcontraseña;
+    private CheckBox checkConductor;
+    private Button btRegistrarse;
 
     private String nombre;
     private String correo;
     private String contraseña;
+    private String tipo = "pasajero";
 
     FirebaseAuth fAuth;
     FirebaseFirestore fDatabase;
@@ -44,18 +47,19 @@ public class RegistrarseActivity extends AppCompatActivity
         fAuth = FirebaseAuth.getInstance();
         fDatabase = FirebaseFirestore.getInstance();
 
-        EdTnombre = (EditText) findViewById(R.id.txtNombre);
-        EdTcorreo = (EditText) findViewById(R.id.txtCorreo);
-        EdTcontraseña = (EditText) findViewById(R.id.txtContraseña);
-        BtRegistrarse = (Button) findViewById(R.id.btnAceptar);
+        edTnombre = (EditText) findViewById(R.id.txtNombre);
+        edTcorreo = (EditText) findViewById(R.id.txtCorreo);
+        edTcontraseña = (EditText) findViewById(R.id.txtContraseña);
+        checkConductor = (CheckBox) findViewById(R.id.chbConductor);
+        btRegistrarse = (Button) findViewById(R.id.btnAceptar);
 
-        BtRegistrarse.setOnClickListener(new View.OnClickListener() {
+        btRegistrarse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
-                nombre = EdTnombre.getText().toString();
-                correo = EdTcorreo.getText().toString();
-                contraseña = EdTcontraseña.getText().toString();
+                nombre = edTnombre.getText().toString();
+                correo = edTcorreo.getText().toString();
+                contraseña = edTcontraseña.getText().toString();
 
                 if (!nombre.isEmpty() && !correo.isEmpty() && !contraseña.isEmpty())
                 {
@@ -79,6 +83,10 @@ public class RegistrarseActivity extends AppCompatActivity
     }
     private void registrarUsuario()
     {
+        if (checkConductor.isChecked())
+        {
+            tipo = "conductor";
+        }
         fAuth.createUserWithEmailAndPassword(correo,contraseña).addOnCompleteListener(new OnCompleteListener<AuthResult>()
         {
             @Override
@@ -87,16 +95,25 @@ public class RegistrarseActivity extends AppCompatActivity
                 if(task.isSuccessful())
                 {
                     Map<String, Object> map = new HashMap<>();
-                    map.put("name",nombre);
-                    map.put("email",correo);
-                    map.put("password",contraseña);
+                    map.put("nombre",nombre);
+                    map.put("correo",correo);
+                    map.put("contraseña",contraseña);
+                    map.put("tipo", tipo);
                     String id = fAuth.getUid();
-                    fDatabase.collection("Users").document(id).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    fDatabase.collection("usuarios").document(id).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task2) {
                             if (task2.isSuccessful())
                             {
-                                startActivity(new Intent(RegistrarseActivity.this,ProfileActivity.class));
+                                User user = new User();
+                                if (user.getTipo().equals("conductor"))
+                                {
+                                    startActivity(new Intent(RegistrarseActivity.this,ConductorActivity.class));
+                                }
+                                else if (user.getTipo().equals("pasajero"))
+                                {
+                                    startActivity(new Intent(RegistrarseActivity.this,PasajeroActivity.class));
+                                }
                                 finish();
                             }
                             else
