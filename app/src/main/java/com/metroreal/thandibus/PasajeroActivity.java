@@ -37,7 +37,7 @@ public class PasajeroActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 fAuth.signOut();
-                Intent intent = new Intent(PasajeroActivity.this, MainActivity.class);
+                Intent intent = new Intent(PasajeroActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -49,7 +49,7 @@ public class PasajeroActivity extends AppCompatActivity {
     private void showInfo()
     {
         String idUsuario = fAuth.getCurrentUser().getUid();
-        fDatabase.collection("Usuarios").document(idUsuario).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        fDatabase.collection("usuarios").document(idUsuario).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task)
             {

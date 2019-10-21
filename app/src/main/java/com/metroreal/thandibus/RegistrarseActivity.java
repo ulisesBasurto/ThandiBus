@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -105,14 +106,22 @@ public class RegistrarseActivity extends AppCompatActivity
                         public void onComplete(@NonNull Task<Void> task2) {
                             if (task2.isSuccessful())
                             {
-                                User user = new User();
-                                if (user.getTipo().equals("conductor"))
+
+                                if (tipo.equals("conductor"))
                                 {
-                                    startActivity(new Intent(RegistrarseActivity.this,ConductorActivity.class));
+                                    Intent intent = new Intent(RegistrarseActivity.this,ConductorActivity.class);
+                                    intent.addFlags (Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
                                 }
-                                else if (user.getTipo().equals("pasajero"))
+                                else if (tipo.equals("pasajero"))
                                 {
-                                    startActivity(new Intent(RegistrarseActivity.this,PasajeroActivity.class));
+                                    Intent intent = new Intent(RegistrarseActivity.this,PasajeroActivity.class);
+                                    intent.addFlags (Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                }
+                                else
+                                {
+                                    Log.w("Registrarse","Error enviando a activity personalizado");
                                 }
                                 finish();
                             }
@@ -120,10 +129,8 @@ public class RegistrarseActivity extends AppCompatActivity
                             {
                                 Toast.makeText(RegistrarseActivity.this, "No se crearon los datos", Toast.LENGTH_SHORT).show();
                             }
-
                         }
                     });
-
                 }
                 else
                 {

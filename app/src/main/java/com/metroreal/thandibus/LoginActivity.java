@@ -22,13 +22,12 @@ public class LoginActivity extends AppCompatActivity {
     private EditText edCorreo;
     private EditText edContraseña;
     private Button btAcceder;
+    private Button btRegistrarse;
     private FirebaseAuth fAuth;
     private FirebaseFirestore fDatabase;
 
     private String correo = "";
     private String contraseña = "";
-
-    String tipo = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         edCorreo = (EditText) findViewById(R.id.txtCorreo);
         edContraseña = (EditText) findViewById(R.id.txtContraseña);
         btAcceder = (Button) findViewById(R.id.btnAcceder);
+        btRegistrarse = (Button) findViewById(R.id.btnRegistrarse);
 
         btAcceder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +58,8 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+
+
     private void loginUser()
     {
         fAuth.signInWithEmailAndPassword(correo,contraseña).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -65,23 +67,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful())
                 {
-                    getTipoUsuario();
-                    if (tipo.equals("pasajero"))
-                    {
-                        Intent intent = new Intent(LoginActivity.this, PasajeroActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                    else if (tipo.equals("conductor"))
-                    {
-                        Intent intent = new Intent(LoginActivity.this, ConductorActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                    else
-                    {
-                        Toast.makeText(LoginActivity.this, "Error enviando a intent personalizado", Toast.LENGTH_SHORT).show();
-                    }
+                    aActivityPersonalizado();
                 }
                 else
                 {
@@ -90,10 +76,10 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-    private void getTipoUsuario()
+    private void aActivityPersonalizado()
     {
         String idUsuario = fAuth.getCurrentUser().getUid();
-        fDatabase.collection("usuario").document(idUsuario).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        fDatabase.collection("usuarios").document(idUsuario).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task)
             {
@@ -102,7 +88,24 @@ public class LoginActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists())
                     {
+                        String tipo = "";
                         tipo = document.getString("tipo");
+                        if (tipo.equals("pasajero"))
+                        {
+                            Intent intent = new Intent(LoginActivity.this, PasajeroActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                        else if (tipo.equals("conductor"))
+                        {
+                            Intent intent = new Intent(LoginActivity.this, ConductorActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                        else
+                        {
+                            Toast.makeText(LoginActivity.this, "Error enviando a intent personalizado", Toast.LENGTH_SHORT).show();
+                        }
                     }
                     else
                     {
@@ -115,5 +118,9 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    public void aRegistrarse(View v)
+    {
+        startActivity(new Intent(LoginActivity.this,RegistrarseActivity.class));
     }
 }

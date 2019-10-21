@@ -37,7 +37,7 @@ public class ConductorActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 fAuth.signOut();
-                Intent intent = new Intent(ConductorActivity.this, MainActivity.class);
+                Intent intent = new Intent(ConductorActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
