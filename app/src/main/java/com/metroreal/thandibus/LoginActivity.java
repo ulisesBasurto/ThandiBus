@@ -123,4 +123,8 @@ public class LoginActivity extends AppCompatActivity {
     {
         startActivity(new Intent(LoginActivity.this,RegistrarseActivity.class));
     }
+    public void aGPS(View v)
+    {
+        startActivity(new Intent(LoginActivity.this,GpsActivity.class));
+    }
 }

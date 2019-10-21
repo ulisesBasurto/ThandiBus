@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ThandiBus</string>
+    <string name="resume">Resume</string>
+    <string name="pause">Pause</string>
 </resources>
