@@ -56,10 +56,30 @@ public class ConductorActivity extends AppCompatActivity {
         btLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fAuth.signOut();
-                Intent intent = new Intent(ConductorActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
+                Map<String, Object> map = new HashMap<>();
+                map.put("latitud", "0");
+                map.put("longitud","0");
+
+                fDatabase.collection("usuarios")
+                        .document(fAuth.getCurrentUser().getUid())
+                        .update(map)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task2) {
+                        if (task2.isSuccessful())
+                        {
+                            fAuth.signOut();
+                            Intent intent = new Intent(ConductorActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                        else
+                        {
+                            Toast.makeText(ConductorActivity.this, "Error al actualizar coordenadas a 0 y no hizo logout", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
             }
         });
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
