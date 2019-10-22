@@ -112,7 +112,7 @@ public class ConductorActivity extends AppCompatActivity {
         }
         else {
             locationManager.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER, 20 * 1000, 10, location);
+                    LocationManager.GPS_PROVIDER, 1000*10, 5, location);
             Toast.makeText(this, "Ubicacion GPS Iniciado", Toast.LENGTH_LONG).show();
             button.setText("Terminar");
         }
