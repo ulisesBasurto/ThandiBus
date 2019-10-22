@@ -36,7 +36,6 @@ public class GpsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_gps);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
         longitudeValueBest = (TextView) findViewById(R.id.longitudeValueBest);
         latitudeValueBest = (TextView) findViewById(R.id.latitudeValueBest);
         longitudeValueGPS = (TextView) findViewById(R.id.longitudeValueGPS);
@@ -112,7 +111,7 @@ public class GpsActivity extends AppCompatActivity {
             criteria.setPowerRequirement(Criteria.POWER_LOW);
             String provider = locationManager.getBestProvider(criteria, true);
             if (provider != null) {
-                locationManager.requestLocationUpdates(provider, 2 * 20 * 1000, 10, locationListenerBest);
+                locationManager.requestLocationUpdates(provider, 1000*30, 1, locationListenerBest);
                 button.setText(R.string.pause);
                 Toast.makeText(this, "Best Provider is " + provider, Toast.LENGTH_LONG).show();
             }

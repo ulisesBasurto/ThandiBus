@@ -100,6 +100,8 @@ public class RegistrarseActivity extends AppCompatActivity
                     map.put("correo",correo);
                     map.put("contraseña",contraseña);
                     map.put("tipo", tipo);
+                    map.put("latitud","0");
+                    map.put("longitud","0");
                     String id = fAuth.getUid();
                     fDatabase.collection("usuarios").document(id).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
